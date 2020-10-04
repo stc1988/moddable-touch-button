@@ -1,21 +1,35 @@
+import Timer from 'timer';
+
 const Button = Container.template($ => ({
   id:$.id,
   active:true,
   top: 0, bottom:0, left:$.left, width:$.width,
   Behavior: class extends Behavior {
-    onCreate(content, data, context) {
+    onCreate(content, data) {
       this.id = data.id;
       this.down = false;
+      this.vibration = { enable: true, duration:100 };
     }
-    onTouchBegan(content, id, x, y, ticks) {
+    onTouchBegan(content, x, y) {
       this.down = true;
-    //  trace(`${this.id}(${this.down})${x} / ${y}\n`);
+      // trace(`${this.id}:${this.down} / ${x} / ${y}\n`);
+      if(this.vibration.enable) {
+        content.delegate("vibrate", this.vibration.duration);
+      }
       content.bubble("onTouchButton", this.id, this.down);
     }
-    onTouchEnded(content, id, x, y, ticks) {
+    onTouchEnded(content, x, y) {
       this.down = false;
-    //   trace(`${this.id}(${this.down})${x} / ${y}\n`);
+      // trace(`${this.id}${this.down} / ${x} / ${y}\n`);
       content.bubble("onTouchButton", this.id, this.down);
+    }
+    vibrate(content, duration) {
+      if(global.vibration) {
+        global.vibration.write(true);
+          Timer.set(() => {
+            global.vibration.write(false);
+          }, duration);
+      }
     }
   }
 }));
@@ -29,7 +43,7 @@ let touchButton = new Container(null, {
   ],
   Behavior: class extends Behavior {
     onTouchButton(conainer, id, down) {
-        // trace(`[onButtonTouched]${id}/${down}\n`);
+        // trace(`[onButtonTouched]${id} / ${down}\n`);
       }
   }
 });

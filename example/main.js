@@ -12,19 +12,11 @@ const application = new Application(null, {
 		}),
   ],
   Behavior: class extends Behavior {
-    vibration(content, duration) {
-      global.vibration.write(true);
-      Timer.set(() => {
-        global.vibration.write(false);
-      }, duration);
-    }
-    onTouchButton(container, id, down) {
-      trace(`[onTouchButton]${id}/${down}\n`);
+    onTouchButton(content, id, down) {
+      trace(`[onTouchButton]${id} / ${down}\n`);
       application.first.string = `${id}/${down}`;
 
-      if(down) {
-        container.delegate("vibration", 100);
-      } else {
+      if(!down) {
         Timer.set(() => {
           application.first.string = 'button test';
         }, 500);
