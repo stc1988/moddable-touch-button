@@ -25,4 +25,6 @@ const application = new Application(null, {
   }
 });
 
-application.add(TouchButton);
+application.add(new TouchButton({id:'a', x:10,    y:241,  width:80, height:40}));
+application.add(new TouchButton({id:'b', x:130,   y:241,  width:70, height:40}));
+application.add(new TouchButton({id:'c', x:230,   y:241,  width:80, height:40}));

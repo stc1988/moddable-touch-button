@@ -1,9 +1,9 @@
 import Timer from 'timer';
 
-const Button = Container.template($ => ({
+const TouchButton = Container.template($ => ({
   id:$.id,
   active:true,
-  top: 0, bottom:0, left:$.left, width:$.width,
+  left:$.x, top: $.y, width:$.width, height:$.height,
   Behavior: class extends Behavior {
     onCreate(content, data) {
       this.id = data.id;
@@ -34,18 +34,4 @@ const Button = Container.template($ => ({
   }
 }));
 
-let touchButton = new Container(null, {
-  top: 240, height: 40, left: 0, right: 0,
-  contents:[
-    new Button({id:'a', left:10,  width:80}),
-    new Button({id:'b', left:130, width:70}),
-    new Button({id:'c', left:230, width:80}),
-  ],
-  Behavior: class extends Behavior {
-    onTouchButton(conainer, id, down) {
-        // trace(`[onButtonTouched]${id} / ${down}\n`);
-      }
-  }
-});
-
-export default touchButton;
+export default TouchButton;
