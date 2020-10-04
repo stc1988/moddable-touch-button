@@ -1,0 +1,18 @@
+{
+  "include": [
+    "$(MODDABLE)/examples/manifest_base.json",
+    "$(MODDABLE)/examples/manifest_piu.json"
+  ],
+  "config": {
+    "startupSound": ""
+  },
+  "modules": {
+    "*": ["./*"],
+    "touch-button":"../touch-button/*"
+  },
+  "resources": {
+    "*-alpha": [
+      "$(MODDABLE)/examples/assets/fonts//OpenSans-Regular-52"
+    ]
+  }
+}
