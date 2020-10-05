@@ -14,7 +14,7 @@ const TouchButton = Container.template($ => ({
       this.down = true;
       // trace(`${this.id}:${this.down} / ${x} / ${y}\n`);
       if(this.vibration.enable) {
-        content.delegate("vibrate", this.vibration.duration);
+        this.vibrate(this.vibration.duration);
       }
       content.bubble("onTouchButton", this.id, this.down);
     }
@@ -23,7 +23,7 @@ const TouchButton = Container.template($ => ({
       // trace(`${this.id}${this.down} / ${x} / ${y}\n`);
       content.bubble("onTouchButton", this.id, this.down);
     }
-    vibrate(content, duration) {
+    vibrate(duration) {
       if(global.vibration) {
         global.vibration.write(true);
           Timer.set(() => {
