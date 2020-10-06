@@ -2,36 +2,41 @@ import { Application, Style, Skin, Label } from 'piu/MC';
 import Timer from 'timer';
 import TouchButton from 'touch-button';
 
-const application = new Application(null, {
+const ExamplaAppcation = Application.template($ => ({
   contents:[
-    Label(null, {
+    Label($, {
+      anchor:"MAIN_SCREEN",
       top: 0, bottom: 0, left: 0, right: 0,
       style:new Style({ font:'OpenSans-Regular-52', color:'white'}),
       skin: new Skin({ fill: 'black' }),
       string: "button test",
     }),
-    new TouchButton({id:'a', x:10,    y:241,  width:80, height:40}),
-    new TouchButton({id:'b', x:130,   y:241,  width:70, height:40}),
-    new TouchButton({id:'b', x:130,   y:241,  width:70, height:40})
+    new TouchButton(null, { name:'a', left:10,  top:241, width:80, height:40 }),
+    new TouchButton(null, { name:'b', left:130, top:241, width:70, height:40 }),
+    new TouchButton(null, { name:'c', left:230, top:241, width:80, height:40 })
   ],
   Behavior: class extends Behavior {
-    onTouchButtonChanged(application, id, down) {
-      trace(`[onTouchButtonChanged]${id} / ${down}\n`);
-      application.first.string = `${id}/${down}`;
+    onCreate(application, data) {
+      this.data = data;
+    }
+    onTouchButtonChanged(application, name, down) {
+      trace(`[onTouchButtonChanged]${name} / ${down}\n`);
+      this.data["MAIN_SCREEN"].string = `${name}/${down}`;
 
       if(!down) {
         Timer.set(() => {
-          application.first.string = 'button test';
+          this.data["MAIN_SCREEN"].string = 'button test';
         }, 500);
       }
       
       // global.button compatible
-      if(global.button[id] ) global.button[id].down = down;
-      if(global.button[id] ) global.button[id].onChanged?.();
+      if(global.button[name] ) global.button[name].down = down;
+      if(global.button[name] ) global.button[name].onChanged?.();
     }
   }
-});
+}));
 
+const application = new ExamplaAppcation({});
 
 // global.button compatible
 class Button {

@@ -2,25 +2,23 @@ import Timer from 'timer';
 
 const TouchButton = Content.template($ => ({
   active:true,
-  left:$.x, top: $.y, width:$.width, height:$.height,
   Behavior: class extends Behavior {
     onCreate(content, data) {
-      this.id = data.id;
       this.down = false;
       this.vibration = { enable: true, duration:100 };
     }
     onTouchBegan(content, x, y) {
       this.down = true;
-      // trace(`${this.id}:${this.down} / ${x} / ${y}\n`);
+      // trace(`${content.name}:${this.down} / ${x} / ${y}\n`);
       if(this.vibration.enable) {
         this.vibrate(this.vibration.duration);
       }
-      content.bubble("onTouchButtonChanged", this.id, this.down);
+      content.bubble("onTouchButtonChanged", content.name, this.down);
     }
     onTouchEnded(content, x, y) {
       this.down = false;
-      // trace(`${this.id}${this.down} / ${x} / ${y}\n`);
-      content.bubble("onTouchButtonChanged", this.id, this.down);
+      // trace(`${content.name}${this.down} / ${x} / ${y}\n`);
+      content.bubble("onTouchButtonChanged", content.name, this.down);
     }
     vibrate(duration) {
       if(global.vibration) {
