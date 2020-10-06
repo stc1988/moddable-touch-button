@@ -1,6 +1,6 @@
 import Timer from 'timer';
 
-const TouchButton = Container.template($ => ({
+const TouchButton = Content.template($ => ({
   active:true,
   left:$.x, top: $.y, width:$.width, height:$.height,
   Behavior: class extends Behavior {
