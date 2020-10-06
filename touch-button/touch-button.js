@@ -1,7 +1,6 @@
 import Timer from 'timer';
 
 const TouchButton = Container.template($ => ({
-  id:$.id,
   active:true,
   left:$.x, top: $.y, width:$.width, height:$.height,
   Behavior: class extends Behavior {
@@ -16,12 +15,12 @@ const TouchButton = Container.template($ => ({
       if(this.vibration.enable) {
         this.vibrate(this.vibration.duration);
       }
-      content.bubble("onTouchButton", this.id, this.down);
+      content.bubble("onTouchButtonChanged", this.id, this.down);
     }
     onTouchEnded(content, x, y) {
       this.down = false;
       // trace(`${this.id}${this.down} / ${x} / ${y}\n`);
-      content.bubble("onTouchButton", this.id, this.down);
+      content.bubble("onTouchButtonChanged", this.id, this.down);
     }
     vibrate(duration) {
       if(global.vibration) {
