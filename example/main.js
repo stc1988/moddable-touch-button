@@ -12,8 +12,8 @@ const application = new Application(null, {
 		}),
   ],
   Behavior: class extends Behavior {
-    onTouchButton(content, id, down) {
-      trace(`[onTouchButton]${id} / ${down}\n`);
+    onTouchButtonChanged(content, id, down) {
+      trace(`[onTouchButtonChanged]${id} / ${down}\n`);
       application.first.string = `${id}/${down}`;
 
       if(!down) {
