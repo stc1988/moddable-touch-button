@@ -9,10 +9,13 @@ const application = new Application(null, {
       style:new Style({ font:'OpenSans-Regular-52', color:'white'}),
       skin: new Skin({ fill: 'black' }),
       string: "button test",
-		}),
+    }),
+    new TouchButton({id:'a', x:10,    y:241,  width:80, height:40}),
+    new TouchButton({id:'b', x:130,   y:241,  width:70, height:40}),
+    new TouchButton({id:'b', x:130,   y:241,  width:70, height:40})
   ],
   Behavior: class extends Behavior {
-    onTouchButtonChanged(content, id, down) {
+    onTouchButtonChanged(application, id, down) {
       trace(`[onTouchButtonChanged]${id} / ${down}\n`);
       application.first.string = `${id}/${down}`;
 
@@ -29,9 +32,6 @@ const application = new Application(null, {
   }
 });
 
-application.add(new TouchButton({id:'a', x:10,    y:241,  width:80, height:40}));
-application.add(new TouchButton({id:'b', x:130,   y:241,  width:70, height:40}));
-application.add(new TouchButton({id:'c', x:230,   y:241,  width:80, height:40}));
 
 // global.button compatible
 class Button {
