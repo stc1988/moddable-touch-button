@@ -4,6 +4,7 @@ const TouchButton = Content.template($ => ({
   active:true,
   Behavior: class extends Behavior {
     onCreate(content, data) {
+      this.id = data;
       this.down = false;
       this.vibration = { enable: true, duration:100 };
     }
@@ -13,12 +14,12 @@ const TouchButton = Content.template($ => ({
       if(this.vibration.enable) {
         this.vibrate(this.vibration.duration);
       }
-      content.bubble("onTouchButtonChanged", content.name, this.down);
+      content.bubble("onTouchButtonChanged", this.id, this.down);
     }
     onTouchEnded(content, x, y) {
       this.down = false;
       // trace(`${content.name}${this.down} / ${x} / ${y}\n`);
-      content.bubble("onTouchButtonChanged", content.name, this.down);
+      content.bubble("onTouchButtonChanged", this.id, this.down);
     }
     vibrate(duration) {
       if(global.vibration) {

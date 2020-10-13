@@ -11,17 +11,17 @@ const ExamplaAppcation = Application.template($ => ({
       skin: new Skin({ fill: 'black' }),
       string: "button test",
     }),
-    new TouchButton(null, { name:'a', left:10,  top:241, width:80, height:40 }),
-    new TouchButton(null, { name:'b', left:130, top:241, width:70, height:40 }),
-    new TouchButton(null, { name:'c', left:230, top:241, width:80, height:40 })
+    new TouchButton("a", { left:10,  top:241, width:80, height:40 }),
+    new TouchButton("b", { left:130, top:241, width:70, height:40 }),
+    new TouchButton("c", { left:230, top:241, width:80, height:40 })
   ],
   Behavior: class extends Behavior {
     onCreate(application, data) {
       this.data = data;
     }
-    onTouchButtonChanged(application, name, down) {
-      trace(`[onTouchButtonChanged]${name} / ${down}\n`);
-      this.data["MAIN_SCREEN"].string = `${name}/${down}`;
+    onTouchButtonChanged(application, id, down) {
+      trace(`[onTouchButtonChanged]${id} / ${down}\n`);
+      this.data["MAIN_SCREEN"].string = `${id}/${down}`;
 
       if(!down) {
         Timer.set(() => {
@@ -30,8 +30,10 @@ const ExamplaAppcation = Application.template($ => ({
       }
       
       // global.button compatible
-      if(global.button[name] ) global.button[name].down = down;
-      if(global.button[name] ) global.button[name].onChanged?.();
+      if(global.button[id] ) {
+        global.button[id].down = down;
+        global.button[id].onChanged?.();
+      }
     }
   }
 }));
