@@ -2,76 +2,62 @@ import { Application, Style, Skin, Label } from 'piu/MC';
 import Timer from 'timer';
 import TouchButton from 'touch-button';
 
-const ExamplaAppcation = Application.template($ => ({
+const ExampleApplication = Application.template($ => ({
   contents:[
     Label($, {
-      anchor:"MAIN_SCREEN",
       top: 0, bottom: 0, left: 0, right: 0,
       style:new Style({ font:'OpenSans-Regular-52', color:'white'}),
       skin: new Skin({ fill: 'black' }),
       string: "button test",
     }),
-    new TouchButton("a", { left:10,  top:241, width:80, height:40 }),
-    new TouchButton("b", { left:130, top:241, width:70, height:40 }),
-    new TouchButton("c", { left:230, top:241, width:80, height:40 })
+    new TouchButton("buttonAchanged", { left:10,  top:241, width:80, height:40 }),
+    new TouchButton("buttonBchanged", { left:130, top:241, width:70, height:40 }),
+    new TouchButton("buttonCchanged", { left:230, top:241, width:80, height:40 })
   ],
   Behavior: class extends Behavior {
     onCreate(application, data) {
       this.data = data;
     }
-    onTouchButtonChanged(application, id, down) {
-      trace(`[onTouchButtonChanged]${id} / ${down}\n`);
-      this.data["MAIN_SCREEN"].string = `${id}/${down}`;
-
+    onDisplaying(application) {
+      // M5stack compatible
+      if (undefined !== global.button) {
+				let button = global.button;
+				button.a.onChanged = function() {
+					application.delegate("buttonAchanged", Boolean(!this.read()));
+				}
+				button.b.onChanged = function() {
+          application.delegate("buttonBchanged", Boolean(!this.read()));
+				}
+				button.c.onChanged = function() {
+          application.delegate("buttonCchanged", Boolean(!this.read()));
+				}
+			}
+    }
+    buttonAchanged(application, down) {
+      application.first.string = `a/${down}`;
       if(!down) {
         Timer.set(() => {
-          this.data["MAIN_SCREEN"].string = 'button test';
+          application.first.string = 'button test';
         }, 500);
       }
-      
-      // global.button compatible
-      if(global.button[id] ) {
-        global.button[id].down = down;
-        global.button[id].onChanged?.();
+    }
+    buttonBchanged(application, down) {
+      application.first.string = `b/${down}`;
+      if(!down) {
+        Timer.set(() => {
+          application.first.string = 'button test';
+        }, 500);
+      }
+    }
+    buttonCchanged(application, down) {
+      application.first.string = `c/${down}`;
+      if(!down) {
+        Timer.set(() => {
+          application.first.string = 'button test';
+        }, 500);
       }
     }
   }
 }));
 
-const application = new ExamplaAppcation({});
-
-// global.button compatible
-class Button {
-  down = false;
-  onChanged() { /* no operation. */ }
-  read() { return this.down; }
-}
-
-global.button = {
-  a: new Button(),
-  b: new Button(),
-  c: new Button(),
-}
-
-global.button.a.onChanged = function() {
-  if (this.read()) {
-    trace('buttonA:press');
-  } else {
-    trace('buttonA:release');
-  }
-}
-global.button.b.onChanged = function() {
-  if (this.read()) {
-    trace('buttonB:press');
-  } else {
-    trace('buttonB:release');
-  }
-}
-global.button.c.onChanged = function() {
-  if (this.read()) {
-    trace('buttonB:press');
-  } else {
-    trace('buttonB:release');
-  }
-}
-
+export default new ExampleApplication({});
